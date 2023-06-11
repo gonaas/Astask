@@ -1,11 +1,18 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { StyledFeed, StyledPlanList } from "./styles";
-import { data } from "../../mockedData";
 import PlanListItem from "../PlanListItem/PlanListItem";
+import axios from 'axios'
 
 interface Props {}
 
 const PlanFeed: React.FC<Props> = () => {
+	const [data, setData] = useState<{}>();
+
+
+	useEffect(() => {
+		axios
+	}, [])
+
 	return (
 		<StyledFeed>
 			<h1>Tus Proyectos</h1>
