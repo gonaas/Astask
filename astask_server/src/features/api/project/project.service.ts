@@ -8,8 +8,8 @@ const insertProject = async (data: IProject): Promise<IProject> => {
   return await project.save();
 };
 
-const getProjectsFilter = async (): Promise<IProject[]> => {
-  const project = await Project.find().setOptions({ sanitizeFilter: false });
+const getProjectsFilter = async (data: IProject | any): Promise<IProject[]> => {
+  const project = await Project.where(data).setOptions({ sanitizeFilter: false });
   return project;
 };
 

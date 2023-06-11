@@ -6,4 +6,8 @@ const generateJWT =  (payload: Object) :string => {
   });
 };
 
-export default { generateJWT };
+const parseJwt = (token: string) => {
+  return jwt.decode(token)
+};
+
+export default { generateJWT,parseJwt };

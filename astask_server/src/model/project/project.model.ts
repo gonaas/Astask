@@ -12,7 +12,7 @@ const projectSchema = new mongoose.Schema<IProject>(
     },
     name: { type: String, required: true },
     description: { type: String, required: false },
-    userId: { type: String, required: false }
+    user_uuid: { type: String, required: false }
   },
   {
     timestamps: true,

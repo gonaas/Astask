@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { handleHttp } from '../../../utils/error.handle';
 import projectService from './project.service';
+import jwtUtils from '../../../utils/jwt';
 
 const postProject = async (req: Request, res: Response) => {
   try {
@@ -15,9 +16,11 @@ const postProject = async (req: Request, res: Response) => {
   }
 };
 
-const getProjects = async (_req: Request, res: Response) => {
+const getProjects = async (req: Request, res: Response) => {
   try {
-    const project = await projectService.getProjectsFilter();
+    let { token } = req.headers as any;
+    let uuid = jwtUtils.parseJwt(token);
+    const project = await projectService.getProjectsFilter({ user_uuid: uuid });
     res.json({
       status: 'success',
       total: project.length,
