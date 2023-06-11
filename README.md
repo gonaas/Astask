@@ -8,6 +8,7 @@ npm install
 ```
 
 Compile the code
+
 ```bash
 npm run tsc
 ```
