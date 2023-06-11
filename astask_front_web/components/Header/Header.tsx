@@ -1,16 +1,11 @@
 import React from "react";
-import Image from "next/image";
 import {
 	HeaderNavigation,
 	StyledHeader,
 	StyledLeftSideHeader,
-	StyledMiddleSideHeader,
-	StyledRightSideHeader,
-	Socials,
 	HeaderContent,
 } from "./styles";
-import { InstagramIcon, TwitterIcon, TiktokIcon } from "../icons/Icons";
-import HeaderSearchBar from "../HeaderSearchBar/HeaderSearchBar";
+import Link from 'next/link'
 
 interface Props {}
 
@@ -20,24 +15,19 @@ const Header: React.FC<Props> = () => {
 			<HeaderContent>
 				<StyledLeftSideHeader>
 					<div>
-					<Socials>
-
-					</Socials>
-						<a
+						<Link
 							style={{
 								fontWeight: "bold",
 								fontSize: "2rem",
+								color: 'black',
+								textDecoration: 'none'
 							}}
+							href={"/projects"}
 						>
 							Astask
-						</a>
+						</Link>
 					</div>
 				</StyledLeftSideHeader>
-				<StyledRightSideHeader>
-					<HeaderSearchBar />
-					<Socials>
-					</Socials>
-				</StyledRightSideHeader>
 			</HeaderContent>
 		</StyledHeader>
 	);
