@@ -12,7 +12,7 @@ const itemSchema = new mongoose.Schema<IItem>(
     },
     name: { type: String},
     description: { type: String},
-    project_id: { type: String, required: true },
+    project_uuid: { type: String, required: true },
   },
   {
     timestamps: true,

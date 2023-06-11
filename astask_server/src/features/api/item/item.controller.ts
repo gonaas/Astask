@@ -19,7 +19,7 @@ const getItems = async (_req: Request, res: Response) => {
   try {
     let { uuid } = res.locals.project;
 
-    const item = await itemService.getItemsFilter({project_id :uuid});
+    const item = await itemService.getItemsFilter({project_uuid :uuid});
     res.json({
       status: 'success',
       total: item.length,
@@ -30,11 +30,13 @@ const getItems = async (_req: Request, res: Response) => {
   }
 };
 
-const getItem = async (_req: Request, res: Response) => {
+const listItem = async (_req: Request, res: Response) => {
   try {
-    let { item } = res.locals;
+    const item = await itemService.getItemsFilter({});
+
     res.json({
       status: 'success',
+      total: item.length,
       data: item,
     });
   } catch (err) {
@@ -69,4 +71,4 @@ const deleteItem = async (_req: Request, res: Response) => {
   }
 };
 
-export default {getItem, getItems, postItem, putItem, deleteItem };
+export default {listItem, getItems, postItem, putItem, deleteItem };

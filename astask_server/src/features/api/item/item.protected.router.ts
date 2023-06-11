@@ -5,6 +5,8 @@ import itemMiddleware from './item.middleware';;
 
 const router: Router = Router();
 
+router.get('/', itemController.listItem);
+
 router.get('/:projectId', itemMiddleware.loadProjectId, itemController.getItems);
 
 router.post('/', itemController.postItem);
