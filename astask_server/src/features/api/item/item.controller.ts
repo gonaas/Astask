@@ -17,7 +17,9 @@ const postItem = async (req: Request, res: Response) => {
 
 const getItems = async (_req: Request, res: Response) => {
   try {
-    const item = await itemService.getItemsFilter({});
+    let { uuid } = res.locals.project;
+
+    const item = await itemService.getItemsFilter({project_id :uuid});
     res.json({
       status: 'success',
       total: item.length,

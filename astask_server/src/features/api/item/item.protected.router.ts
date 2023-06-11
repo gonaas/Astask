@@ -5,9 +5,7 @@ import itemMiddleware from './item.middleware';;
 
 const router: Router = Router();
 
-router.get('/:uuid',itemMiddleware.loadItem, itemController.getItem);
-
-router.get('/', itemController.getItems);
+router.get('/:projectId', itemMiddleware.loadProjectId, itemController.getItems);
 
 router.post('/', itemController.postItem);
 
