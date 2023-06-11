@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { handleHttp } from '../../../utils/error.handle';
 import userService from './user.service';
+import jwt from '../../../utils/jwt';
 
 const login = async (req: Request, res: Response) => {
   try {
@@ -48,12 +49,14 @@ const getUsers = async (_req: Request, res: Response) => {
   }
 };
 
-const getUser = async (_req: Request, res: Response) => {
+const getUser = async (req: Request, res: Response) => {
   try {
-    let { user } = res.locals;
+    let { token } = req.headers;
+    let uuid = (jwt.parseJwt(token as string) as any).uuid;
+
     res.json({
       status: 'success',
-      data: user,
+      uuid,
     });
   } catch (err) {
     handleHttp(res, 'ERROR_GET_USER', err);

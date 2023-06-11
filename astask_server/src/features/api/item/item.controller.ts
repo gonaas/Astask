@@ -15,11 +15,13 @@ const postItem = async (req: Request, res: Response) => {
   }
 };
 
-const getItems = async (_req: Request, res: Response) => {
+const getItems = async (req: Request, res: Response) => {
   try {
-    let { uuid } = res.locals.project;
+    let { uuid } = req.params;
 
-    const item = await itemService.getItemsFilter({project_uuid :uuid});
+    console.log('uuid: ', uuid);
+
+    const item = await itemService.getItemsFilter(uuid);
     res.json({
       status: 'success',
       total: item.length,
@@ -41,6 +43,29 @@ const listItem = async (_req: Request, res: Response) => {
     });
   } catch (err) {
     handleHttp(res, 'ERROR_GET_ITEM', err);
+  }
+};
+
+const changeStatus = async (req: Request, res: Response) => {
+  try {
+    let token = req.headers.token;
+    if (!token) {
+      res.json({
+        status: 'failed',
+        msg: 'no token provided',
+      });
+    }
+
+    let { item_uuid } = req.body;
+
+    let newItem = await itemService.changeItemStatus(item_uuid);
+
+    res.json({
+      status: 'success',
+      data: newItem,
+    });
+  } catch (err) {
+    handleHttp(res, 'ERROR_UPDATE_ITEM', err);
   }
 };
 
@@ -71,4 +96,4 @@ const deleteItem = async (_req: Request, res: Response) => {
   }
 };
 
-export default {listItem, getItems, postItem, putItem, deleteItem };
+export default { changeStatus, listItem, getItems, postItem, putItem, deleteItem };

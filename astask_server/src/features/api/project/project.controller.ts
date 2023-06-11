@@ -20,7 +20,9 @@ const getProjects = async (req: Request, res: Response) => {
   try {
     let { token } = req.headers as any;
     let uuid = jwtUtils.parseJwt(token);
+
     const project = await projectService.getProjectsFilter({ user_uuid: uuid });
+
     res.json({
       status: 'success',
       total: project.length,

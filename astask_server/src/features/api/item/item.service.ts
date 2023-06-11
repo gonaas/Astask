@@ -8,12 +8,13 @@ const insertItem = async (data: IItem): Promise<IItem> => {
   return await item.save();
 };
 
-const getItemsFilter = async (data: IItem | any): Promise<IItem[]> => {
-  const items = await Item.where(data).setOptions({ sanitizeFilter: false });
+const getItemsFilter = async (uuid: any): Promise<IItem[]> => {
+  console.log('id es: ', uuid);
+  let items = await Item.find({ project_uuid: uuid });
   return items;
 };
 
-const getItemFilter = async (data: IItem | any)  => {
+const getItemFilter = async (data: IItem | any) => {
   const item = await Item.findOne(data).setOptions({ sanitizeFilter: false });
   return item;
 };
@@ -38,14 +39,38 @@ const updateItem = async (uuid: string, data: IItem) => {
   return item;
 };
 
-const deleteItem = async (uuid: string)=> {
-  const item = await Item.deleteOne(
+const changeItemStatus = async (uuid: string) => {
+  const oldItem: any = await Item.findOne({ uuid: uuid });
+  let oldStatus: 'new' | 'done' = oldItem.status;
+
+  const item = await Item.findOneAndUpdate(
     {
       uuid: uuid,
-    }
+    },
+    {
+      $set: { status: oldStatus === 'done' ? 'new' : 'done' },
+    },
+    {
+      new: true,
+    },
   );
   return item;
 };
 
-export default { toPublic, insertItem, getItemsFilter, getItemFilter, getItem, updateItem, deleteItem };
+const deleteItem = async (uuid: string) => {
+  const item = await Item.deleteOne({
+    uuid: uuid,
+  });
+  return item;
+};
 
+export default {
+  toPublic,
+  insertItem,
+  getItemsFilter,
+  getItemFilter,
+  getItem,
+  updateItem,
+  deleteItem,
+  changeItemStatus,
+};

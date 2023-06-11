@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { ulid } from 'ulid'
+import { ulid } from 'ulid';
 
 import { IItem } from './item.interfaces';
 
@@ -10,9 +10,10 @@ const itemSchema = new mongoose.Schema<IItem>(
       required: true,
       default: () => ulid(),
     },
-    name: { type: String},
-    description: { type: String},
+    name: { type: String },
+    description: { type: String },
     project_uuid: { type: String, required: true },
+    status: { type: String, required: true },
   },
   {
     timestamps: true,

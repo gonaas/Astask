@@ -8,9 +8,9 @@ const insertProject = async (data: IProject): Promise<IProject> => {
   return await project.save();
 };
 
-const getProjectsFilter = async (data: IProject | any): Promise<IProject[]> => {
-  const project = await Project.where(data).setOptions({ sanitizeFilter: false });
-  return project;
+const getProjectsFilter = async (data: any): Promise<IProject[]> => {
+  const projects = await Project.find({ user_uuid: data.user_uuid.uuid });
+  return projects;
 };
 
 const getProject = async (uuid: string) => {
@@ -33,15 +33,18 @@ const updateProject = async (uuid: string, data: IProject) => {
   return project;
 };
 
-const deleteProject = async (uuid: string)=> {
-  const project = await Project.deleteOne(
-    {
-      uuid: uuid,
-    }
-  );
+const deleteProject = async (uuid: string) => {
+  const project = await Project.deleteOne({
+    uuid: uuid,
+  });
   return project;
 };
 
-export default { toPublic, insertProject, getProjectsFilter, getProject, updateProject, deleteProject };
-
-
+export default {
+  toPublic,
+  insertProject,
+  getProjectsFilter,
+  getProject,
+  updateProject,
+  deleteProject,
+};

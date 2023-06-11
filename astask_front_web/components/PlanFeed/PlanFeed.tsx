@@ -2,31 +2,50 @@ import React, {useState, useEffect} from "react";
 import { StyledFeed, StyledPlanList } from "./styles";
 import PlanListItem from "../PlanListItem/PlanListItem";
 import { IProject, IItem } from "../../types";
+import { useRouter } from "next/router";
+import axios from "axios";
 
 interface Props {}
 
 const PlanFeed: React.FC<Props> = () => {
+	const router = useRouter()
 	const [projects, setProjects] = useState<IProject[]>();
 
-
 	useEffect(() => {
-		//TODO: connect to db/backend
-		/*axios.get('http://locahost:3002/api/project-s', {}).then(res => {
+		// check if the user is logged in
+		if(!localStorage.getItem('token')) {
+			router.push('/')
+		}
+
+		let token = localStorage.getItem('token') ?? "";
+
+		axios.get('http://localhost:3002/api/project-s', {
+			headers: {
+				token: token
+			}
+		}).then(res => {
+			if (res.data.status === 'success' && res.data.data) {
+				let projects = res.data.data;
+				setProjects(projects)
+			} else {
+				alert('error getting projecgts')
+				setProjects([])
+			}
 		}).catch(err => {
-			alert("error getting the projects from the database")
-		})*/
-
-		let mockedProjects: IProject[] = [
-			{ name: "Arkey",uuid: "1234567899", description: "Nice ass project" },
-			{ name: "Planitfy", uuid: "9878654321", description: "Planitfy was destined to fail" },
-		]
-
-		setProjects(mockedProjects);
+			alert('error getting projecgts')
+			setProjects([])
+		})
 	}, [])
 
 	return (
 		<StyledFeed>
 			<h1>Tus Proyectos</h1>
+			<div>
+				<button onClick={() => {
+					router.push('/project/add')
+				}}>Add proyecto</button>
+			</div>
+			<br />
 			<StyledPlanList>
 				{projects?.map((project, index) => (
 					<PlanListItem key={index} project={project} />
