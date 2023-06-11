@@ -4,14 +4,21 @@ import userService from './user.service';
 
 const login = async (req: Request, res: Response) => {
   try {
-    let { body } = req;
-    const user = await userService.insertUser(body);
+    const { password } = req.body;
+    const { user } = res.locals;
+    if (!user.validPassword(password)) {
+      throw new Error('INVALID USER');
+    }
+
+    const { token } = await user.toAuthJSON();
+    res.cookie('token', token);
     res.json({
       status: 'success',
+      token,
       data: user,
     });
   } catch (err) {
-    handleHttp(res, 'ERROR_POST_USER', err);
+    handleHttp(res, 'ERROR_LOGIN_USER', err);
   }
 };
 
@@ -30,7 +37,7 @@ const postUser = async (req: Request, res: Response) => {
 
 const getUsers = async (_req: Request, res: Response) => {
   try {
-    const user = await userService.getUsersFilter();
+    const user = await userService.getUsersFilter({});
     res.json({
       status: 'success',
       total: user.length,
@@ -80,4 +87,4 @@ const deleteUser = async (_req: Request, res: Response) => {
   }
 };
 
-export default { getUser, getUsers, postUser, putUser, deleteUser };
+export default { login, getUser, getUsers, postUser, putUser, deleteUser };

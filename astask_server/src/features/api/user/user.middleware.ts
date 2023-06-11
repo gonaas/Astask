@@ -36,4 +36,19 @@ const loadUser = async (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-export default { loadUser };
+const loadUserByEmail = async (req: Request, res: Response, next: NextFunction) => {
+  const { email } = req.body;
+  if (!email) {
+    return next(Boom.badData('The email is required', { code: 'USER.EMAIL_REQUIRED' }));
+  }
+  const user = await userService.getUserFilter({ email });
+  if (!user) {
+    return next(Boom.badData('user not found', { code: 'NOT_FOUND' }));
+  }
+  res.locals.user = user;
+
+  next();
+};
+
+
+export default { loadUser,loadUserByEmail };

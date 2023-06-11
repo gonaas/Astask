@@ -8,9 +8,14 @@ const insertUser = async (data: IUser): Promise<IUser> => {
   return await user.save();
 };
 
-const getUsersFilter = async (): Promise<IUser[]> => {
-  const users = await User.find().setOptions({ sanitizeFilter: false });
+const getUsersFilter = async (data: IUser | any): Promise<IUser[]> => {
+  const users = await User.where(data).setOptions({ sanitizeFilter: false });
   return users;
+};
+
+const getUserFilter = async (data: IUser | any)  => {
+  const user = await User.findOne(data).setOptions({ sanitizeFilter: false });
+  return user;
 };
 
 const getUser = async (uuid: string) => {
@@ -42,8 +47,5 @@ const deleteUser = async (uuid: string)=> {
   return user;
 };
 
-export default { toPublic, insertUser, getUsersFilter, getUser, updateUser, deleteUser };
+export default { toPublic, insertUser, getUsersFilter, getUserFilter, getUser, updateUser, deleteUser };
 
-/*
-Promise<IUser | null>
-*/
