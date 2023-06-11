@@ -1,18 +1,18 @@
 import mongoose from 'mongoose';
 import { ulid } from 'ulid'
 
-import { IProject } from './project.interfaces';
+import { IItem } from './item.interfaces';
 
-const projectSchema = new mongoose.Schema<IProject>(
+const itemSchema = new mongoose.Schema<IItem>(
   {
     uuid: {
       type: String,
       required: true,
       default: () => ulid(),
     },
-    name: { type: String, required: true },
-    description: { type: String, required: false },
-    userId: { type: String, required: false }
+    name: { type: String},
+    description: { type: String},
+    projectId: { type: String, required: true },
   },
   {
     timestamps: true,
@@ -20,7 +20,7 @@ const projectSchema = new mongoose.Schema<IProject>(
   },
 );
 
-projectSchema.set('toJSON', {
+itemSchema.set('toJSON', {
   transform: (_doc, project) => {
     delete project._id;
     delete project.__v;
@@ -31,7 +31,7 @@ projectSchema.set('toJSON', {
   },
 });
 
-projectSchema.methods.toJSON = function () {
+itemSchema.methods.toJSON = function () {
   const projectObject = this.toObject();
   delete projectObject._id;
   delete projectObject.__v;
@@ -40,4 +40,4 @@ projectSchema.methods.toJSON = function () {
   return projectObject;
 };
 
-export default mongoose.model<IProject>('Project', projectSchema);
+export default mongoose.model<IItem>('item', itemSchema);
